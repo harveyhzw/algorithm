@@ -70,6 +70,4 @@ public class QuickSort {
         array[indexA] = array[indexB];
         array[indexB] = a;
     }
-
-
 }
