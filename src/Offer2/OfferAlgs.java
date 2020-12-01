@@ -80,4 +80,58 @@ public class OfferAlgs {
         }
         return false;
     }
+
+    /**
+     * Offer 29
+     * 输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字。
+     */
+    public int[] spiralOrder(int[][] matrix) {
+        if(matrix== null || matrix.length==0 || matrix[0].length==0) {
+            return new int[0];
+        }
+
+        int rows = matrix.length;
+        int colums = matrix[0].length;
+        int[] result = new int[rows*colums];
+
+        int r1 = 0;
+        int r2= matrix.length-1;
+        int c1 = 0;
+        int c2 = matrix[0].length-1;
+        int index = 0;
+        while(r1<=r2 && c1<=c2) {
+            //上
+            for(int i=c1; i<=c2; i++) {
+                result[index] = matrix[r1][i];
+                index++;
+            }
+
+            //右
+            for(int i=r1+1;i<=r2; i++) {
+                result[index] = matrix[i][c2];
+                index++;
+
+            }
+
+            //下
+            if(r1!=r2) {
+                for(int i= c2-1; i>=c1; i--){
+                    result[index] = matrix[r2][i];
+                    index++;
+                }
+            }
+
+            //左
+            if(c1!=c2) {
+                for(int i=r2-1; i>r1; i--){
+                    result[index] = matrix[i][c1];
+                    index++;
+                }
+            }
+
+            r1++;r2--; c1++; c2--;
+        }
+
+        return result;
+    }
 }
