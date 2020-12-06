@@ -1,10 +1,12 @@
 package Offer2;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class OfferAlgs {
     public static void main(String[] args) {
         int[] arr = new int[]{3,0,1,2,4,4,3,6,5,2,4,9};
+
+        System.out.println(firstUniqChar("loveleetcode"));
 
     }
 
@@ -134,4 +136,158 @@ public class OfferAlgs {
 
         return result;
     }
+
+    /**
+     * Offer 50
+     * 在一个字符串中找到第一个只出现一次的字符，并返回它的位置。字符串只包含 ASCII 码字符。
+     */
+    public static  char firstUniqChar(String s) {
+        if(s==null) return ' ';
+
+        /*int length = s.length();
+        Map<Character, Integer> count = new LinkedHashMap<>();
+        for(int i=0;i<length; i++) {
+            Character c = s.charAt(i);
+            if(count.containsKey(c)){
+                int value = count.get(c);
+                count.put(c, ++value);
+            } else{
+                count.put(c, 1);
+            }
+        }
+
+        Iterator iter = count.entrySet().iterator();
+
+        while(iter.hasNext()) {
+            Map.Entry<Character, Integer> entry = (Map.Entry<Character, Integer>)iter.next();
+            if(entry.getValue() == 1){
+                return entry.getKey();
+            }
+        }*/
+
+        int length = s.length();
+        BitSet bs1 = new BitSet(128);
+        BitSet bs2 = new BitSet(128);
+
+        for(char c : s.toCharArray()) {
+            if(!bs1.get(c)&&!bs2.get(c)){
+                bs1.set(c);
+            } else if(bs1.get(c)&&!bs2.get(c)) {
+                bs2.set(c);
+            }
+        }
+
+        for(int i=0; i<length; i++) {
+            char c = s.charAt(i);
+            if(bs1.get(c)&&!bs2.get(c)){
+                return c;
+            }
+        }
+
+        return ' ';
+    }
+
+    /**
+     * Offer 9
+     * 用两个栈实现一个队列。队列的声明如下，请实现它的两个函数 appendTail 和 deleteHead ，分别完成在队列尾部插入整数和在队列头部删除整数的功能。(若队列中没有元素，deleteHead 操作返回 -1 )
+     */
+    class CQueue {
+
+        Stack<Integer> in = new Stack<Integer>();
+        Stack<Integer> out = new Stack<Integer>();
+        public CQueue() {
+
+        }
+
+        public void appendTail(int value) {
+            in.push(value);
+        }
+
+        public int deleteHead() {
+            if(out.isEmpty()){
+                while(!in.isEmpty()) {
+                    out.push(in.pop());
+                }
+            }
+
+            if(!out.isEmpty()){
+                return out.pop();
+            }
+
+            return -1;
+        }
+
+
+    }
+
+    /**
+     * Offer 40
+     * 输入整数数组 arr ，找出其中最小的 k 个数。例如，输入4、5、1、6、2、7、3、8这8个数字，则最小的4个数字是1、2、3、4。
+     */
+    public int[]  topKLeastNumber(int[] arr, int k) {
+
+        if(arr == null || arr.length<=k) {
+            return arr;
+        }
+
+        int[] ret = new int[k];
+        /*int length = arr.length;
+
+
+
+        for(int i=length/2-1; i>=0; i--){
+            addJustLittleHeap(arr, i, length);
+        }
+
+        int r=0;
+
+        for(int j=length-1; j>0;j--) {
+
+            if(r<k) {
+                ret[r] = arr[0];
+                r++;
+            }
+            else {
+                break;
+            }
+
+            swap(arr, 0, j);
+            addJustLittleHeap(arr, 0, j);
+        }*/
+
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        for(Integer v : arr) {
+            heap.add(v);
+        }
+
+        for(int i=0; i<k; i++) {
+            ret[i] = heap.poll();
+        }
+
+        return ret;
+
+    }
+
+    private void addJustLittleHeap(int[] arr, int i, int length) {
+        int temp = arr[i];
+        for(int k=2*i+1; k<length;k=2*k+1) {
+            if(k+1<length&&arr[k]>arr[k+1]) {
+                k=k+1;
+            }
+
+            if(temp>arr[k]){
+                swap(arr, i, k);
+                i=k;
+            } else{
+                break;
+            }
+        }
+    }
+
+    static void swap(int array[], int indexA, int indexB){
+        int a = array[indexA];
+        array[indexA] = array[indexB];
+        array[indexB] = a;
+    }
+
 }
