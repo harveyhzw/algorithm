@@ -8,7 +8,48 @@ public class OfferAlgs {
 
         System.out.println(firstUniqChar("loveleetcode"));
 
+
+        OfferAlgs a = new OfferAlgs();
+        a.addNum(1);
+        System.out.println(a.findMedian());
+        a.addNum(2);
+        System.out.println(a.findMedian());
+
     }
+
+
+
+        /** initialize your data structure here. */
+        PriorityQueue<Integer> left;
+        PriorityQueue<Integer> right;
+
+
+        OfferAlgs() {
+            left = new PriorityQueue<>((o1, o2) -> o2 - o1);// 大顶
+            right = new PriorityQueue<>();//小定
+
+        }
+
+        void addNum(int num) {
+            if(left.size() == right.size()) {
+                right.add(num);
+                left.add(right.poll());
+            } else{
+                left.add(num);
+                right.add(left.poll());
+            }
+        }
+
+        double findMedian() {
+
+            if(left.size()==right.size()) {
+                return (double)(left.peek()+right.peek())/2;
+            } else {
+                return (double)left.peek();
+            }
+        }
+
+
 
     /**
      * Offer 03
@@ -289,5 +330,45 @@ public class OfferAlgs {
         array[indexA] = array[indexB];
         array[indexB] = a;
     }
+
+    /**
+     * Offer 57
+     * 输入一个递增排序的数组和一个数字s，在数组中查找两个数，使得它们的和正好是s。如果有多对数字的和等于s，则输出任意一对即可。
+     */
+    public int[] twoSum(int[] nums, int target) {
+
+
+        int length = nums.length;
+
+        if(length == 0 || (length==1 && nums[0] != target)) {
+            return new int[0];
+        }
+
+        int start = 0;
+        int end = length -1;
+        boolean find = false;
+        while(start<end) {
+            int sum =  nums[start] + nums[end];
+            if(sum>target) {
+                end--;
+            } else if(sum<target){
+                start++;
+            } else {
+                find = true;
+                break;
+            }
+        }
+
+        if(find) {
+            int[] ret = new int[2];
+            ret[0] = nums[start];
+            ret[1] = nums[end];
+            return ret;
+        } else {
+            return new int[0];
+        }
+
+    }
+
 
 }
