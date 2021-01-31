@@ -3,7 +3,7 @@ import java.util.Arrays;
 public class HeapSort {
 
     public static void main(String[] args) {
-        int[] arr = new int[]{3,0,1,2,4,4,3,6,5,2,4,9};
+        int[] arr = new int[]{3,0,1};
         HeapSort(arr);
         System.out.println(Arrays.toString(arr));
     }
@@ -25,11 +25,11 @@ public class HeapSort {
         int temp = array[i];
 
         for (int k=2*i + 1; k<length; k=2*k+1) {
-            if(k+1 < length && array[k] < array[k+1]) {
+            if(k+1 < length && array[k] > array[k+1]) {
                 k = k+1;
             }
 
-            if(temp < array[k]) {
+            if(temp > array[k]) {
                 swap(array, i, k);
                 i = k;
             } else {
